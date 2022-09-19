@@ -49,15 +49,9 @@ def spatial_attention(input_feature, name):
 
 def FWDUnet(input,is_training=True):
     conv1 = conv2D(input, 32)
-    for i in range(32):
-        plt.matshow(conv1[0,:,:,i], cmap='viridis')
-        plt.axis('off')
-        plt.savefig('features//feature-{}.png'.format(i), bbox_inches='tight')
-    plt.show(A)
     bn1 = tf.nn.relu(bn(conv1, is_training))
     attention_output = myattention(bn1,is_training,2)
-    # bn1_reta = channel_attention(bn1,"myunet",8)   ##从这里开始是我自己的部分
-    conv1_1 = conv2D(attention_output, 32)
+    # bn1_reta = channel_attention(bn1,"myunet",8)   ##
     bn1_1 = tf.nn.relu(bn(conv1_1, is_training))
     pool1 = tf.layers.max_pooling2d(bn1_1, 2, 2)
 
@@ -65,7 +59,7 @@ def FWDUnet(input,is_training=True):
 
     conv2 = conv2D(pool1, 64)
     bn2 = tf.nn.relu(bn(conv2, is_training))
-    attention_output1 = myattention(bn2,is_training,2) #这个参数需要不断做实验来找出来
+    attention_output1 = myattention(bn2,is_training,2) #
     conv2_1 = conv2D(attention_output1, 64)
     bn2_1 = tf.nn.relu(bn(conv2_1, is_training))
     pool2 = tf.layers.max_pooling2d(bn2_1, 2, 2)
