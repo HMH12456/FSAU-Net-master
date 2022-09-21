@@ -12,7 +12,7 @@ def bn(input, is_training=True):
     return tf.layers.batch_normalization(inputs=input,training=is_training,
                                       center=True,scale=True,fused=True)
 
-def myattention(input,is_training,reta):
+def FSA(input,is_training,reta):
     Avgput = tf.layers.average_pooling2d(input,2,2)
     Avgput = conv2D(Avgput,Avgput.shape[3]*reta,3)
     Avgput = tf.nn.relu(bn(Avgput,is_training))
@@ -47,10 +47,10 @@ def spatial_attention(input_feature, name):
 
     return input_feature * concat
 
-def FWDUnet(input,is_training=True):
+def FSAU-Net(input,is_training=True):
     conv1 = conv2D(input, 32)
     bn1 = tf.nn.relu(bn(conv1, is_training))
-    attention_output = myattention(bn1,is_training,2)
+    attention_output = FSA(bn1,is_training,2)
     # bn1_reta = channel_attention(bn1,"myunet",8)   ##
     bn1_1 = tf.nn.relu(bn(conv1_1, is_training))
     pool1 = tf.layers.max_pooling2d(bn1_1, 2, 2)
@@ -59,21 +59,21 @@ def FWDUnet(input,is_training=True):
 
     conv2 = conv2D(pool1, 64)
     bn2 = tf.nn.relu(bn(conv2, is_training))
-    attention_output1 = myattention(bn2,is_training,2) #
+    attention_output1 = FSA(bn2,is_training,2) #
     conv2_1 = conv2D(attention_output1, 64)
     bn2_1 = tf.nn.relu(bn(conv2_1, is_training))
     pool2 = tf.layers.max_pooling2d(bn2_1, 2, 2)
 
     conv3 = conv2D(pool2, 128)
     bn3 = tf.nn.relu(bn(conv3, is_training))
-    attention_output3 = myattention(bn3,is_training,2)
+    attention_output3 = FSA(bn3,is_training,2)
     conv3_1 = conv2D(attention_output3, 128)
     bn3_1 = tf.nn.relu(bn(conv3_1, is_training))
     pool3 = tf.layers.max_pooling2d(bn3_1, 2, 2)
 
     conv4 = conv2D(pool3, 256)
     bn4 = tf.nn.relu(bn(conv4, is_training))
-    attention_output4 = myattention(bn4,is_training,2)
+    attention_output4 = FSA(bn4,is_training,2)
     conv4_1 = conv2D(attention_output4, 256)
     bn4_1 = tf.nn.relu(bn(conv4_1, is_training))
     pool4 = tf.layers.max_pooling2d(bn4_1, 2, 2)
