@@ -16,7 +16,7 @@ def FSA(input,is_training,reta):
     Avgput = tf.layers.average_pooling2d(input,2,2)
     Avgput = conv2D(Avgput,Avgput.shape[3]*reta,3)
     Avgput = tf.nn.relu(bn(Avgput,is_training))
-    Avgput = conv2D(Avgput, Avgput.shape[3] // reta,3) # ----尺寸 256 x 256
+    Avgput = conv2D(Avgput, Avgput.shape[3] // reta,3) #
     Avgput = tf.nn.relu(bn(Avgput,is_training))
     output = tf.image.resize_images(Avgput,tf.shape(input)[1:3])
     output = tf.nn.sigmoid(output) * input
